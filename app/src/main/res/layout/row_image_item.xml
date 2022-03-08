@@ -9,18 +9,13 @@
         <variable
             name="image"
             type="com.zerir.robusta.domain.model.Image" />
-
-        <variable
-            name="onClick"
-            type="com.zerir.robusta.presentation.adapter.data.ImageListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:onClick="@{() -> onClick.onImageClicked(image)}">
+        android:layout_marginBottom="8dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"

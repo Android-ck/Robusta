@@ -11,19 +11,19 @@ import com.zerir.calendarview.adapterData.DayItem
 import com.zerir.robusta.R
 import com.zerir.robusta.domain.model.Image
 import com.zerir.robusta.presentation.adapter.ImageAdapter
-import com.zerir.robusta.presentation.adapter.data.CalendarListener
 import com.zerir.robusta.presentation.adapter.data.DataItem
-import com.zerir.robusta.presentation.adapter.data.ImageListener
 import com.zerir.robusta.presentation.utils.toast
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity(), ImageListener, CalendarListener {
+class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModel()
 
     private var toaster: Toast? = null
     private val imageAdapter by inject<ImageAdapter>()
+
+    private val calendarItem = DataItem.CalendarItem(::observeCalendar)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,15 +32,13 @@ class MainActivity : AppCompatActivity(), ImageListener, CalendarListener {
         setupRecyclerView()
         imagesObserve()
 
-        /** adding calendar  */
-        imageAdapter.submitList(listOf(DataItem.CalendarItem))
+        /** adding calendar */
+        imageAdapter.submitList(listOf(calendarItem))
     }
 
     private fun setupRecyclerView() {
         findViewById<RecyclerView>(R.id.images_rv).apply {
-            adapter = imageAdapter.apply {
-                registerListeners(this@MainActivity, this@MainActivity)
-            }
+            adapter = imageAdapter
             addItemDecoration(DividerItemDecoration(applicationContext, VERTICAL))
             setHasFixedSize(true)
         }
@@ -51,8 +49,13 @@ class MainActivity : AppCompatActivity(), ImageListener, CalendarListener {
             val images = data.first
             val error = data.second
             images?.let { list ->
-                val items = mutableListOf<DataItem>(DataItem.CalendarItem)
-                items.addAll(list.map { DataItem.ImageItem(it) })
+                /** adding calendar  */
+                val items = mutableListOf<DataItem>(calendarItem)
+                /** adding some items as horizontal  */
+                val horizontalItems = list.take(10).map { DataItem.ImageItem(it, ::onImageClicked) }
+                items.add(DataItem.HorizontalImagesItem(horizontalItems))
+                /** adding all items as vertical  */
+                items.addAll(list.reversed().map { DataItem.ImageItem(it, ::onImageClicked) })
                 imageAdapter.submitList(items)
             }
             error?.let { e ->
@@ -62,15 +65,15 @@ class MainActivity : AppCompatActivity(), ImageListener, CalendarListener {
         }
     }
 
-    override fun onImageClicked(image: Image) {
-        toaster = toast(toaster, image.user)
-        toaster?.show()
-    }
-
-    override fun observeCalendar(selectedDay: LiveData<DayItem>) {
+    private fun observeCalendar(selectedDay: LiveData<DayItem>) {
         selectedDay.observe(this@MainActivity) { day ->
             viewModel.loadImages("${day.numberInMonth}")
         }
+    }
+
+    private fun onImageClicked(image: Image) {
+        toaster = toast(toaster, image.user)
+        toaster?.show()
     }
 
 }
