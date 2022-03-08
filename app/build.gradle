@@ -4,6 +4,12 @@ plugins {
     id 'kotlin-kapt'
 }
 
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localProperties.load(new FileInputStream(localPropertiesFile))
+}
+
 android {
     compileSdk 31
 
@@ -18,6 +24,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField 'String', 'APP_KEY', localProperties['app_key']
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -49,6 +58,9 @@ dependencies {
     /** projects */
     implementation(project(":CalendarView"))
 
+    /** activity ext */
+    implementation 'androidx.activity:activity-ktx:1.4.0'
+
     /** Lifecycle */
     def lifecycleExtVersion = '2.2.0'
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleExtVersion"
@@ -68,12 +80,11 @@ dependencies {
 
     /** Retrofit */
     def retrofitVersion = "2.9.0"
-    def moshiVersion = '1.13.0'
     def okhttp3Version = '5.0.0-alpha.5'
     implementation(
             "com.squareup.retrofit2:retrofit:$retrofitVersion",
-            "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion",
-            "com.squareup.moshi:moshi:$moshiVersion",
+            "com.squareup.retrofit2:adapter-rxjava3:$retrofitVersion",
+            "com.squareup.retrofit2:converter-moshi:$retrofitVersion",
             "com.squareup.okhttp3:logging-interceptor:$okhttp3Version",
     )
 

@@ -4,21 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".presentation.MainActivity">
 
-    <com.zerir.calendarview.CalendarView
-        android:id="@+id/calendar"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/images_rv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        app:cardBackgroundColor="@color/teal_200"
-        app:cardCornerRadius="190dp"
-        android:elevation="16dp"
-        app:defaultDayBackgroundColor="@color/gray_alpha"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="3"
+        tools:listitem="@layout/row_image_item" />
 </androidx.constraintlayout.widget.ConstraintLayout>
