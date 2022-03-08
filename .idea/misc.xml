@@ -3,6 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="CalendarView/src/main/res/drawable/ic_back.xml" value="0.1655" />
+        <entry key="CalendarView/src/main/res/drawable/item_bg_circle.xml" value="0.1655" />
+        <entry key="CalendarView/src/main/res/drawable/item_bg_rounded.xml" value="0.1655" />
+        <entry key="CalendarView/src/main/res/layout/activity_main.xml" value="0.2630208333333333" />
+        <entry key="CalendarView/src/main/res/layout/row_day_item.xml" value="0.259375" />
+        <entry key="CalendarView/src/main/res/layout/view_calendar.xml" value="0.2630208333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.24947916666666667" />
       </map>
     </option>

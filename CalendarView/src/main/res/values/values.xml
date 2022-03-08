@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr format="reference" name="calendarViewStyle"/>
+    <declare-styleable name="CalendarView" parent="CardView">
+        <attr format="color" name="defaultDayBackgroundColor"/>
+    </declare-styleable>
+</resources>
