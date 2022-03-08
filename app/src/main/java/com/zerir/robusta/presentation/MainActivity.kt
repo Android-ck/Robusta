@@ -3,41 +3,23 @@ package com.zerir.robusta.presentation
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.OrientationHelper.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 import com.zerir.calendarview.adapterData.DayItem
 import com.zerir.robusta.R
-import com.zerir.robusta.data.RepositoryImpl
-import com.zerir.robusta.data.remote.RemoteDataSourceImpl
-import com.zerir.robusta.data.remote.api.ImageApi
-import com.zerir.robusta.data.remote.api.RetrofitClientBuilder
 import com.zerir.robusta.domain.model.Image
 import com.zerir.robusta.presentation.adapter.ImageAdapter
 import com.zerir.robusta.presentation.adapter.data.CalendarListener
 import com.zerir.robusta.presentation.adapter.data.DataItem
 import com.zerir.robusta.presentation.adapter.data.ImageListener
 import com.zerir.robusta.presentation.utils.toast
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), ImageListener, CalendarListener {
 
-    private val viewModel: MainViewModel by viewModels {
-        val builder = RetrofitClientBuilder()
-        val imagesApi = builder.build(ImageApi::class.java)
-        val remoteDataSource = RemoteDataSourceImpl(imagesApi)
-        val repository = RepositoryImpl(remoteDataSource)
-        /** viewModel factory */
-        object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return MainViewModel(repository) as T
-            }
-        }
-    }
+    private val viewModel: MainViewModel by viewModel()
 
     private var toaster: Toast? = null
     private val imageAdapter = ImageAdapter()

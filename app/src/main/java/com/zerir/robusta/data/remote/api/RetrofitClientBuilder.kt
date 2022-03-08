@@ -13,38 +13,37 @@ class RetrofitClientBuilder {
 
     fun <Api> build(api: Class<Api>): Api = retrofitClient.create(api)
 
+    private val retrofitClient = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .client(buildRetrofitClient())
+        .addConverterFactory(MoshiConverterFactory.create())
+        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+        .build()
+
+    private fun buildRetrofitClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .readTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .addInterceptor(
+                Interceptor { chain ->
+                    chain.proceed(
+                        chain.request().newBuilder().also {
+                            it.addHeader("Accept", "application/json")
+                        }.build()
+                    )
+                }
+            ).also { client ->
+                if (BuildConfig.DEBUG) {
+                    val logging = HttpLoggingInterceptor()
+                    logging.setLevel(HttpLoggingInterceptor.Level.BODY)
+                    client.addInterceptor(logging)
+                }
+            }
+            .build()
+    }
+
     companion object {
         private const val BASE_URL = "https://pixabay.com/api/"
-
-        private val retrofitClient = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(buildRetrofitClient())
-            .addConverterFactory(MoshiConverterFactory.create())
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-            .build()
-
-        private fun buildRetrofitClient(): OkHttpClient {
-            return OkHttpClient.Builder()
-                .readTimeout(60, TimeUnit.SECONDS)
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .addInterceptor(
-                    Interceptor { chain ->
-                        chain.proceed(
-                            chain.request().newBuilder().also {
-                                it.addHeader("Accept", "application/json")
-                            }.build()
-                        )
-                    }
-                ).also { client ->
-                    if (BuildConfig.DEBUG) {
-                        val logging = HttpLoggingInterceptor()
-                        logging.setLevel(HttpLoggingInterceptor.Level.BODY)
-                        client.addInterceptor(logging)
-                    }
-                }
-                .build()
-        }
-
     }
 
 }
