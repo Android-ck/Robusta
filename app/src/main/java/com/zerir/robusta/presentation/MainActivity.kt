@@ -15,6 +15,7 @@ import com.zerir.robusta.presentation.adapter.data.CalendarListener
 import com.zerir.robusta.presentation.adapter.data.DataItem
 import com.zerir.robusta.presentation.adapter.data.ImageListener
 import com.zerir.robusta.presentation.utils.toast
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(), ImageListener, CalendarListener {
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity(), ImageListener, CalendarListener {
     private val viewModel: MainViewModel by viewModel()
 
     private var toaster: Toast? = null
-    private val imageAdapter = ImageAdapter()
+    private val imageAdapter by inject<ImageAdapter>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +31,9 @@ class MainActivity : AppCompatActivity(), ImageListener, CalendarListener {
 
         setupRecyclerView()
         imagesObserve()
+
+        /** adding calendar  */
+        imageAdapter.submitList(listOf(DataItem.CalendarItem))
     }
 
     private fun setupRecyclerView() {
@@ -65,8 +69,7 @@ class MainActivity : AppCompatActivity(), ImageListener, CalendarListener {
 
     override fun observeCalendar(selectedDay: LiveData<DayItem>) {
         selectedDay.observe(this@MainActivity) { day ->
-            toaster = toast(toaster, "${day.numberInMonth}, ${day.nameInWeek}")
-            toaster?.show()
+            viewModel.loadImages("${day.numberInMonth}")
         }
     }
 

@@ -5,6 +5,6 @@ import io.reactivex.rxjava3.core.Observable
 
 interface Repository {
 
-    fun requestImages(): Observable<List<Image>>
+    fun requestImages(query: String): Observable<List<Image>>
 
 }

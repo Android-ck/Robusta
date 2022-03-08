@@ -18,30 +18,28 @@ class MainViewModel(
     val images: LiveData<Pair<List<Image>?, Throwable?>> = _images
 
     private val compositeDisposable = CompositeDisposable()
-    private lateinit var imagesObserver: DisposableObserver<List<Image>>
 
-    init {
-        initImageObserver()
-        compositeDisposable.add(imagesObserver)
+    private var lastQuery = ""
 
-        loadImages()
+    fun loadImages(query: String) {
+        if(query != lastQuery) {
+            lastQuery = query
+            compositeDisposable.add(
+                repository.requestImages(query)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(initImageObserver())
+            )
+        }
     }
 
-    private fun loadImages() {
-        repository.requestImages()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(imagesObserver)
-    }
-
-    private fun initImageObserver() {
-        imagesObserver = object : DisposableObserver<List<Image>>() {
+    private fun initImageObserver(): DisposableObserver<List<Image>> =
+        object : DisposableObserver<List<Image>>() {
             override fun onNext(data: List<Image>) { _images.postValue(Pair(data, null)) }
 
             override fun onError(e: Throwable) { _images.postValue(Pair(null, e)) }
 
             override fun onComplete() {}
-        }
     }
 
     override fun onCleared() {

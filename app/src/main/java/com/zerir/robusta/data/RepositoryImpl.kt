@@ -9,8 +9,8 @@ class RepositoryImpl(
     private val remoteDataSource: RemoteDataSource,
 ) : Repository {
 
-    override fun requestImages() : Observable<List<Image>> {
-        val response = remoteDataSource.requestImages()
+    override fun requestImages(query: String) : Observable<List<Image>> {
+        val response = remoteDataSource.requestImages(query)
         return response.map { res -> res.hits }
     }
 

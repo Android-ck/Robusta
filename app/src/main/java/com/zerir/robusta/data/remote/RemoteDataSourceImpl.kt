@@ -8,6 +8,7 @@ class RemoteDataSourceImpl(
     private val imageApi: ImageApi,
 ) : RemoteDataSource {
 
-    override fun requestImages(): Observable<RetrieveResponse> = imageApi.retrieveImages()
+    override fun requestImages(query: String): Observable<RetrieveResponse> =
+        imageApi.retrieveImages(query = query)
 
 }

@@ -5,6 +5,6 @@ import io.reactivex.rxjava3.core.Observable
 
 interface RemoteDataSource {
 
-    fun requestImages(): Observable<RetrieveResponse>
+    fun requestImages(query: String): Observable<RetrieveResponse>
 
 }

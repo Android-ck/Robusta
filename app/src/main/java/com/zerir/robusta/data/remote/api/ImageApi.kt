@@ -10,6 +10,7 @@ interface ImageApi {
 
     @GET("?")
     fun retrieveImages(
+        @Query("q") query: String,
         @Query("key") key: String = BuildConfig.APP_KEY,
     ): Observable<RetrieveResponse>
 
