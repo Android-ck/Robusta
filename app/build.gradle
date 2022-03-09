@@ -67,8 +67,11 @@ dependencies {
 
     /** Epoxy */
     def epoxyVersion = '5.0.0-beta05'
-    implementation "com.airbnb.android:epoxy:$epoxyVersion"
     kapt "com.airbnb.android:epoxy-processor:$epoxyVersion"
+    implementation(
+            "com.airbnb.android:epoxy:$epoxyVersion",
+            "com.airbnb.android:epoxy-databinding:$epoxyVersion",
+    )
 
     /** Rx */
     def rxVersion = '3.0.1'

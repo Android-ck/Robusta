@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="Adapt/src/main/res/layout/row_horizontal_rv_item.xml" value="0.2630208333333333" />
         <entry key="CalendarView/src/main/res/drawable/ic_back.xml" value="0.1655" />
         <entry key="CalendarView/src/main/res/drawable/item_bg_circle.xml" value="0.1655" />
         <entry key="CalendarView/src/main/res/drawable/item_bg_rounded.xml" value="0.1655" />
