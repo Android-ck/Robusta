@@ -7,9 +7,11 @@
         android:id="@+id/images_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/black"
         android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:context=".presentation.MainActivity"
         tools:itemCount="3"
         tools:listitem="@layout/row_image_item" />
+
 </layout>

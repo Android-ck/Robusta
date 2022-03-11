@@ -95,6 +95,7 @@ class CalendarManagerImpl : CalendarManager {
             id = id,
             nameInWeek = getDayNameInWeek(_calendar),
             numberInMonth = dayNumber,
+            month = _calendar.get(Calendar.MONTH),
             isSelected = true,
             isCurrentDay = checkIfDayIsCurrentDay(dayNumber),
         )
@@ -119,6 +120,7 @@ class CalendarManagerImpl : CalendarManager {
                 id = id,
                 nameInWeek = getDayNameInWeek(newCal),
                 numberInMonth = dayNumber,
+                month = newCal.get(Calendar.MONTH),
                 isSelected = _selectedDay.value?.id == id,
                 isCurrentDay = checkIfDayIsCurrentDay(dayNumber)
             )

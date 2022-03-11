@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun observeCalendar(selectedDay: LiveData<DayItem>) {
         selectedDay.observe(this@MainActivity) { day ->
-            viewModel.loadImages("${day.numberInMonth}")
+            viewModel.loadImages("${day.numberInMonth * (day.month + 1)}")
         }
     }
 

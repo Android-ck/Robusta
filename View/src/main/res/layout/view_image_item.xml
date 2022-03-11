@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="8dp">
+
+    <com.zerir.view.CircleImage
+        android:id="@+id/photo_iv"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="50dp"
+        tools:src="@drawable/ic_download_failed" />
+
+    <com.zerir.view.HeaderDesc
+        android:id="@+id/headerDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        tools:descText="Dummy Description alskdl;askdl;ask;ldaksl;dkal;sdkals;kdl; akal;sdkal;s kdl;askd;la ks;ld"
+        tools:headerText="Dummy Header" />
+</LinearLayout>

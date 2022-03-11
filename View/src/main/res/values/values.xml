@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Image">
+        <attr name="android:id"/>
+        <attr format="string" name="url"/>
+        <attr name="android:layout_height"/>
+        <attr name="android:src"/>
+    </declare-styleable>
+    <declare-styleable name="HeaderDesc">
+        <attr name="android:id"/>
+        <attr format="string" name="headerText"/>
+        <attr format="string" name="descText"/>
+        <attr format="color" name="headerTextColor"/>
+        <attr format="color" name="descTextColor"/>
+        <attr format="dimension" name="headerTextSize"/>
+        <attr format="dimension" name="descTextSize"/>
+        <attr name="headerTextStyle">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+        </attr>
+        <attr name="descTextStyle">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+        </attr>
+    </declare-styleable>
+</resources>

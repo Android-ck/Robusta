@@ -6,7 +6,6 @@ import com.airbnb.epoxy.EpoxyController
 import com.zerir.calendarview.adapterData.DayItem
 import com.zerir.robusta.R
 import com.zerir.robusta.databinding.RowCalendarItemBinding
-import com.zerir.robusta.databinding.RowCircleImageItemBinding
 import com.zerir.robusta.databinding.RowImageItemBinding
 import com.zerir.robusta.domain.model.Image
 
@@ -46,10 +45,10 @@ class MainController(
     class HorizontalImageItem(
         private val imageData: Image,
         private val imageListener: (image: Image) -> Unit,
-    ) : ViewBindingKotlinModel<RowCircleImageItemBinding>(R.layout.row_circle_image_item) {
+    ) : ViewBindingKotlinModel<RowImageItemBinding>(R.layout.row_image_item) {
 
-        override fun RowCircleImageItemBinding.bind() {
-            image = imageData
+        override fun RowImageItemBinding.bind() {
+            dataItem.setData(imageData.previewURL, null, null)
             root.setOnClickListener { imageListener(imageData) }
         }
 
@@ -61,7 +60,7 @@ class MainController(
     ) : ViewBindingKotlinModel<RowImageItemBinding>(R.layout.row_image_item) {
 
         override fun RowImageItemBinding.bind() {
-            image = imageData
+            dataItem.setData(imageData.previewURL, imageData.user, imageData.tags)
             root.setOnClickListener { imageListener(imageData) }
         }
 
