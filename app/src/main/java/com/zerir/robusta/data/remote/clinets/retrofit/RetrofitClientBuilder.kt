@@ -1,4 +1,4 @@
-package com.zerir.robusta.data.remote.api
+package com.zerir.robusta.data.remote.clinets.retrofit
 
 import com.zerir.robusta.BuildConfig
 import okhttp3.Interceptor
@@ -15,12 +15,12 @@ class RetrofitClientBuilder {
 
     private val retrofitClient = Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .client(buildRetrofitClient())
+        .client(buildOkHttpClient())
         .addConverterFactory(MoshiConverterFactory.create())
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .build()
 
-    private fun buildRetrofitClient(): OkHttpClient {
+    private fun buildOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .readTimeout(60, TimeUnit.SECONDS)
             .connectTimeout(60, TimeUnit.SECONDS)

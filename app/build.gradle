@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id("com.apollographql.apollo3").version("3.1.0")
 }
 
 def localProperties = new Properties()
@@ -42,10 +43,6 @@ android {
     buildFeatures {
         dataBinding true
     }
-}
-
-kapt {
-    correctErrorTypes = true
 }
 
 dependencies {
@@ -103,8 +100,25 @@ dependencies {
     def koinVersion = "3.1.5"
     implementation"io.insert-koin:koin-android:$koinVersion"
 
+    /** apollo */
+    def apolloVersion = "3.1.0"
+    implementation(
+            "com.apollographql.apollo3:apollo-runtime:$apolloVersion",
+            "com.apollographql.apollo3:apollo-rx3-support:$apolloVersion",
+    )
+
     testImplementation 'junit:junit:4.13.2'
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}
+
+/** needed for epoxy */
+kapt {
+    correctErrorTypes = true
+}
+
+/** needed for apollo */
+apollo {
+    packageName.set("com.zerir.robusta")
 }

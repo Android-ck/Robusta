@@ -1,5 +1,7 @@
 package com.zerir.robusta.data
 
+import com.apollographql.apollo3.api.ApolloResponse
+import com.zerir.robusta.LaunchListQuery
 import com.zerir.robusta.data.remote.RemoteDataSource
 import com.zerir.robusta.domain.Repository
 import com.zerir.robusta.domain.model.Image
@@ -13,5 +15,8 @@ class RepositoryImpl(
         val response = remoteDataSource.requestImages(query)
         return response.map { res -> res.hits }
     }
+
+    override fun requestLaunches(): Single<ApolloResponse<LaunchListQuery.Data>> =
+        remoteDataSource.requestLaunches()
 
 }

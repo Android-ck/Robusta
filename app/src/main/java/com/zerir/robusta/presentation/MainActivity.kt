@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.OrientationHelper.VERTICAL
 import com.airbnb.epoxy.EpoxyRecyclerView
 import com.zerir.calendarview.adapterData.DayItem
+import com.zerir.robusta.LaunchListQuery
 import com.zerir.robusta.R
 import com.zerir.robusta.domain.model.Image
 import com.zerir.robusta.presentation.controller.MainController
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     private var toaster: Toast? = null
 
     private val mainController by inject<MainController> {
-        parametersOf(::observeCalendar, ::onImageClicked)
+        parametersOf(::observeCalendar, ::onImageClicked, ::onLaunchClicked)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,14 +33,13 @@ class MainActivity : AppCompatActivity() {
 
         setupRecyclerView()
         imagesObserve()
+        launchesObserve()
     }
 
     private fun setupRecyclerView() {
         findViewById<EpoxyRecyclerView>(R.id.images_rv).apply {
             setController(mainController)
             addItemDecoration(DividerItemDecoration(applicationContext, VERTICAL))
-            /** request controller data with empty list */
-            mainController.requestModelBuild()
         }
     }
 
@@ -48,12 +48,23 @@ class MainActivity : AppCompatActivity() {
             val images = data.first
             val error = data.second
             images?.let { list ->
-                /** add horizontal images */
-                mainController.horizontalImages = list.take(10)
                 /** add all images */
-                mainController.images = list.reversed()
-                /** request controller data with new data */
-                mainController.requestModelBuild()
+                mainController.horizontalImages = list
+            }
+            error?.let { e ->
+                toaster = toast(toaster, e.message.toString())
+                toaster?.show()
+            }
+        }
+    }
+
+    private fun launchesObserve() {
+        viewModel.launches.observe(this) { data ->
+            val launches = data.first
+            val error = data.second
+            launches?.let { list ->
+                /** add all launches */
+                mainController.launches = list
             }
             error?.let { e ->
                 toaster = toast(toaster, e.message.toString())
@@ -70,6 +81,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun onImageClicked(image: Image) {
         toaster = toast(toaster, image.user)
+        toaster?.show()
+    }
+
+    private fun onLaunchClicked(launch: LaunchListQuery.Launch) {
+        toaster = toast(toaster, launch.site.toString())
         toaster?.show()
     }
 

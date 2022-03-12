@@ -2,11 +2,13 @@ package com.zerir.robusta.di
 
 import androidx.lifecycle.LiveData
 import com.zerir.calendarview.adapterData.DayItem
+import com.zerir.robusta.LaunchListQuery
 import com.zerir.robusta.data.RepositoryImpl
 import com.zerir.robusta.data.remote.RemoteDataSource
 import com.zerir.robusta.data.remote.RemoteDataSourceImpl
 import com.zerir.robusta.data.remote.api.ImageApi
-import com.zerir.robusta.data.remote.api.RetrofitClientBuilder
+import com.zerir.robusta.data.remote.clinets.apollo.ApolloClientBuilder
+import com.zerir.robusta.data.remote.clinets.retrofit.RetrofitClientBuilder
 import com.zerir.robusta.domain.Repository
 import com.zerir.robusta.domain.model.Image
 import com.zerir.robusta.presentation.MainViewModel
@@ -20,7 +22,11 @@ val appModule = module {
 
     single { get<RetrofitClientBuilder>().build(ImageApi::class.java) }
 
-    single<RemoteDataSource> { RemoteDataSourceImpl(imageApi = get()) }
+    single { ApolloClientBuilder() }
+
+    single { get<ApolloClientBuilder>().apolloClient }
+
+    single<RemoteDataSource> { RemoteDataSourceImpl(imageApi = get(), apolloClient = get()) }
 
     single<Repository> { RepositoryImpl(remoteDataSource = get()) }
 
@@ -28,6 +34,7 @@ val appModule = module {
 
     factory { (calendarListener: (selectedDay: LiveData<DayItem>) -> Unit,
                   imageListener: (image: Image) -> Unit,
-              ) -> MainController(calendarListener, imageListener)
+                  launchListener: (launch: LaunchListQuery.Launch) -> Unit,
+              ) -> MainController(calendarListener, imageListener, launchListener)
     }
 }
