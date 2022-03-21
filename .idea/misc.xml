@@ -17,6 +17,7 @@
         <entry key="View/src/main/res/layout/view_header_desc.xml" value="0.2630208333333333" />
         <entry key="View/src/main/res/layout/view_header_title.xml" value="0.2630208333333333" />
         <entry key="View/src/main/res/layout/view_image.xml" value="0.2630208333333333" />
+        <entry key="View/src/main/res/layout/view_image_item.xml" value="0.2630208333333333" />
         <entry key="View/src/main/res/layout/view_network_image.xml" value="0.2630208333333333" />
         <entry key="app/src/main/res/drawable/ic_download.xml" value="0.1655" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
@@ -24,6 +25,12 @@
         <entry key="app/src/main/res/layout/row_circle_image_item.xml" value="0.258974358974359" />
         <entry key="app/src/main/res/layout/row_horizontal_rv_item.xml" value="0.2630208333333333" />
         <entry key="app/src/main/res/layout/row_image_item.xml" value="0.258974358974359" />
+        <entry key="app/src/main/res/layout/row_images_empty_item.xml" value="0.2630208333333333" />
+        <entry key="app/src/main/res/layout/row_images_error_item.xml" value="0.2630208333333333" />
+        <entry key="app/src/main/res/layout/row_images_loading_item.xml" value="0.2630208333333333" />
+        <entry key="app/src/main/res/layout/row_launches_empty_item.xml" value="0.2630208333333333" />
+        <entry key="app/src/main/res/layout/row_launches_error_item.xml" value="0.2630208333333333" />
+        <entry key="app/src/main/res/layout/row_launches_loading_item.xml" value="0.2630208333333333" />
       </map>
     </option>
   </component>

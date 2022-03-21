@@ -35,6 +35,8 @@ val appModule = module {
     factory { (calendarListener: (selectedDay: LiveData<DayItem>) -> Unit,
                   imageListener: (image: Image) -> Unit,
                   launchListener: (launch: LaunchListQuery.Launch) -> Unit,
-              ) -> MainController(calendarListener, imageListener, launchListener)
+                  onRefreshImages: () -> Unit,
+                  onRefreshLaunches: () -> Unit,
+              ) -> MainController(calendarListener, imageListener, launchListener, onRefreshImages, onRefreshLaunches)
     }
 }

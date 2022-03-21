@@ -107,6 +107,9 @@ dependencies {
             "com.apollographql.apollo3:apollo-rx3-support:$apolloVersion",
     )
 
+    /** state machine */
+    implementation 'com.tinder.statemachine:statemachine:0.2.0'
+
     testImplementation 'junit:junit:4.13.2'
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

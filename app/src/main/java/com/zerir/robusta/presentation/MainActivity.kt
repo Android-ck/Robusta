@@ -11,7 +11,9 @@ import com.zerir.calendarview.adapterData.DayItem
 import com.zerir.robusta.LaunchListQuery
 import com.zerir.robusta.R
 import com.zerir.robusta.domain.model.Image
+import com.zerir.robusta.presentation.controller.Data
 import com.zerir.robusta.presentation.controller.MainController
+import com.zerir.robusta.presentation.state.*
 import com.zerir.robusta.presentation.utils.toast
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,7 +26,13 @@ class MainActivity : AppCompatActivity() {
     private var toaster: Toast? = null
 
     private val mainController by inject<MainController> {
-        parametersOf(::observeCalendar, ::onImageClicked, ::onLaunchClicked)
+        parametersOf(
+            ::observeCalendar,
+            ::onImageClicked,
+            ::onLaunchClicked,
+            ::onRefreshImages,
+            ::onRefreshLaunches
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,8 +40,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setupRecyclerView()
-        imagesObserve()
-        launchesObserve()
+        collectImageState()
+        collectImageSideEffect()
+        collectLaunchState()
+        collectLaunchSideEffect()
     }
 
     private fun setupRecyclerView() {
@@ -43,33 +53,35 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun imagesObserve() {
-        viewModel.images.observe(this) { data ->
-            val images = data.first
-            val error = data.second
-            images?.let { list ->
-                /** add all images */
-                mainController.horizontalImages = list
-            }
-            error?.let { e ->
-                toaster = toast(toaster, e.message.toString())
-                toaster?.show()
-            }
+    private fun collectImageState() = viewModel.imageState.observe(this) {
+        mainController.imagesData = when (val state = it) {
+            is ImageState.FailureImagesData -> Data(error = state.error)
+            ImageState.LoadingImagesData -> Data(isLoading = true)
+            is ImageState.RetrieveImagesData -> Data(data = state.images)
+            ImageState.UnInitialized -> Data()
         }
     }
 
-    private fun launchesObserve() {
-        viewModel.launches.observe(this) { data ->
-            val launches = data.first
-            val error = data.second
-            launches?.let { list ->
-                /** add all launches */
-                mainController.launches = list
-            }
-            error?.let { e ->
-                toaster = toast(toaster, e.message.toString())
-                toaster?.show()
-            }
+    private fun collectImageSideEffect() = viewModel.imageSideEffect.observe(this) {
+        if (it is ImageSideEffect.ShowToast) {
+            toaster = toast(toaster, it.message)
+            toaster?.show()
+        }
+    }
+
+    private fun collectLaunchState() = viewModel.launchState.observe(this) {
+        mainController.launchesData = when (val state = it) {
+            is LaunchState.FailureLaunchesData -> Data(error = state.error)
+            LaunchState.LoadingLaunchesData -> Data(isLoading = true)
+            is LaunchState.RetrieveLaunchesData -> Data(data = state.launches)
+            LaunchState.UnInitialized -> Data()
+        }
+    }
+
+    private fun collectLaunchSideEffect() = viewModel.launchSideEffect.observe(this) {
+        if (it is LaunchSideEffect.ShowToast) {
+            toaster = toast(toaster, it.message)
+            toaster?.show()
         }
     }
 
@@ -80,13 +92,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onImageClicked(image: Image) {
-        toaster = toast(toaster, image.user)
-        toaster?.show()
+        viewModel.manageImageStateEvent(ImageEvent.OnImageClicked(image))
     }
 
     private fun onLaunchClicked(launch: LaunchListQuery.Launch) {
-        toaster = toast(toaster, launch.site.toString())
-        toaster?.show()
+        viewModel.manageLaunchStateEvent(LaunchEvent.OnLaunchClicked(launch))
+    }
+
+    private fun onRefreshImages() {
+        viewModel.refreshImages()
+    }
+
+    private fun onRefreshLaunches() {
+        viewModel.refreshLaunches()
     }
 
 }
